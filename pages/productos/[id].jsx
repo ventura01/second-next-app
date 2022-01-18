@@ -27,11 +27,10 @@ const ProductoPage = ({ success, error, producto }) => {
         <div className="row">
           <div className="card my-4 col-md-6">
             <div className="card-body">
-              <h2>
-                {producto._id} - {producto.title}
-              </h2>
-              <h3>{producto.plot}</h3>
-              <p>{producto.price}</p>
+              <h2 className="text-uppercase">{producto.title}</h2>
+              <h3 className="text-muted card-subtitle">{producto.plot}</h3>
+              <h2 className="fw-bold">{producto.price}</h2>
+              <p className="fw-light text-muted">{producto._id}</p>
             </div>
           </div>
         </div>

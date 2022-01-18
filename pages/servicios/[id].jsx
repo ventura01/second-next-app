@@ -19,7 +19,7 @@ const ServicioPage = ({ success, error, servicio }) => {
   }
   return (
     <Layout
-      title={`Picky | Servicio ${servicio.id}`}
+      title={`Picky | Servicio ${servicio._id}`}
       description="Pagina de detalle del servicio."
     >
       <div className="container">
@@ -27,11 +27,10 @@ const ServicioPage = ({ success, error, servicio }) => {
         <div className="row">
           <div className="card my-4 col-md-6">
             <div className="card-body">
-              <h2>
-                {servicio._id} - {servicio.title}
-              </h2>
-              <h3>{servicio.plot}</h3>
-              <p>{servicio.price}</p>
+              <h2 className="text-uppercase">{servicio.title}</h2>
+              <h3 className="card-subtitle text-muted">{servicio.plot}</h3>
+              <h2 className="fw-bold">{servicio.price}</h2>
+              <p className="text-muted fw-light">{`Ref: ${servicio._id}`}</p>
             </div>
           </div>
         </div>
