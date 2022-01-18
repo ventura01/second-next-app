@@ -26,9 +26,6 @@ const Products = ({ productos }) => {
             </div>
           </div>
         ))}
-        <Link href="/">
-          <a className="btn btn-primary">Volver..</a>
-        </Link>
       </div>
     </Layout>
   );
@@ -60,5 +57,6 @@ export async function getServerSideProps() {
     return { props: { productos } };
   } catch (error) {
     console.log(error);
+    return { props: { success: false, error: "Error" } };
   }
 }

@@ -1,9 +1,25 @@
 import Layout from "../../components/Layout";
+import Link from "next/link";
+import dbConnect from "../../lib/dbConnect";
+import Producto from "../../models/Producto";
 
-const Producto = ({ data }) => {
+const ProductoPage = ({ success, error, producto }) => {
+  console.log(success);
+  console.log(error);
+  console.log(producto);
+  if (!success) {
+    return (
+      <div className="container text-center my-5">
+        <h1>{error}</h1>
+        <Link href="/productos">
+          <a className="btn btn-primary mt-5">Volver</a>
+        </Link>
+      </div>
+    );
+  }
   return (
     <Layout
-      title={`Picky | Producto ${data.id}`}
+      title={`Picky | Producto ${producto.id}`}
       description="Pagina de detalle del producto."
     >
       <div className="container">
@@ -12,46 +28,38 @@ const Producto = ({ data }) => {
           <div className="card my-4 col-md-6">
             <div className="card-body">
               <h2>
-                {data.id} - {data.name}
+                {producto._id} - {producto.title}
               </h2>
-              <h3>{data.email}</h3>
-              <p>{data.body}</p>
+              <h3>{producto.plot}</h3>
+              <p>{producto.price}</p>
             </div>
           </div>
         </div>
+        <Link href="/productos">
+          <a className="btn btn-primary">Volver</a>
+        </Link>
       </div>
     </Layout>
   );
 };
 
-export default Producto;
+export default ProductoPage;
 
-export async function getStaticPaths() {
+export async function getServerSideProps({ params }) {
   try {
-    const res = await fetch("https://jsonplaceholder.typicode.com/comments");
-    const data = await res.json();
-    const paths = data.map(({ id }) => ({ params: { id: `${id}` } }));
-    return {
-      paths,
-      fallback: false,
-    };
+    await dbConnect();
+    const producto = await Producto.findById(params.id).lean();
+    if (!producto) {
+      return { props: { success: false, error: "Pelicula no encontrada" } };
+    }
+    console.log(producto);
+    producto._id = `${producto._id}`;
+    return { props: { success: true, producto } };
   } catch (error) {
     console.log(error);
-  }
-}
-
-export async function getStaticProps({ params }) {
-  try {
-    const res = await fetch(
-      "https://jsonplaceholder.typicode.com/comments/" + params.id
-    );
-    const data = await res.json();
-    return {
-      props: {
-        data,
-      },
-    };
-  } catch (error) {
-    console.log(error);
+    if (error.kind === "ObjectId") {
+      return { props: { success: false, error: "Id no valido!" } };
+    }
+    return { props: { success: false, error: "Error de servidor!" } };
   }
 }
