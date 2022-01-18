@@ -11,21 +11,23 @@ const Products = ({ productos }) => {
     >
       <div className="container">
         <h1>Products</h1>
-        {productos.map(({ _id, plot, title, price }) => (
-          <div key={_id} className="card my-3 col-md-4">
-            <div className="card-body">
-              <Link href={`/productos/${_id}`}>
-                <a>
-                  <h3>
-                    {_id} - {title}
-                  </h3>
-                </a>
-              </Link>
-              <h4>{plot}</h4>
-              <p>{price}</p>
-            </div>
+        <div className="container">
+          <div className="row">
+            {productos.map(({ _id, plot, title, price }) => (
+              <div key={_id} className="card my-3 col-md-4 d-flex">
+                <div className="card-body">
+                  <h2 className="text-uppercase">{title}</h2>
+                  <h4 className="card-subtitle mb-2 text-muted">{plot}</h4>
+                  <h3>{`Precio: ${price}`}</h3>
+                  <p className="text-muted">{`Ref: ${_id}`}</p>
+                  <Link href={`/productos/${_id}`}>
+                    <a className="btn btn-primary my-4">Ver más..</a>
+                  </Link>
+                </div>
+              </div>
+            ))}
           </div>
-        ))}
+        </div>
       </div>
     </Layout>
   );

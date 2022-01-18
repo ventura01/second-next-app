@@ -1,6 +1,7 @@
-import Servicio from "../models/Servicio";
-import Layout from "../components/Layout";
-import dbConnect from "../lib/dbConnect";
+import Servicio from "../../models/Servicio";
+import Link from "next/link";
+import Layout from "../../components/Layout";
+import dbConnect from "../../lib/dbConnect";
 
 const ServiciosPage = ({ servicios }) => {
   console.log(servicios);
@@ -20,6 +21,9 @@ const ServiciosPage = ({ servicios }) => {
                   <h5 className="card-subtitle mb-2 text-muted">{plot}</h5>
                   <h2>{`Precio: ${price}`}</h2>
                   <p className="card-subtitle mb-2 text-muted">{`Ref: ${_id}`}</p>
+                  <Link href={`/servicios/${_id}`}>
+                    <a className="btn btn-primary my-4">Ver más..</a>
+                  </Link>
                 </div>
               </div>
             ))}
