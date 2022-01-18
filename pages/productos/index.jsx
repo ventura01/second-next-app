@@ -1,7 +1,9 @@
 import Link from "next/link";
+import Producto from "../../models/Producto";
 import Layout from "../../components/Layout";
+import dbConnect from "../../lib/dbConnect";
 
-const Products = ({ data }) => {
+const Products = ({ productos }) => {
   return (
     <Layout
       title="Picky | Productos"
@@ -9,18 +11,18 @@ const Products = ({ data }) => {
     >
       <div className="container">
         <h1>Products</h1>
-        {data.map((producto) => (
-          <div key={producto.id} className="card my-3 col-md-4">
+        {productos.map(({ _id, plot, title, price }) => (
+          <div key={_id} className="card my-3 col-md-4">
             <div className="card-body">
-              <Link href={`/productos/${producto.id}`}>
+              <Link href={`/productos/${_id}`}>
                 <a>
                   <h3>
-                    {producto.id} - {producto.name}
+                    {_id} - {title}
                   </h3>
                 </a>
               </Link>
-              <h4>{producto.email}</h4>
-              <p>{producto.body}</p>
+              <h4>{plot}</h4>
+              <p>{price}</p>
             </div>
           </div>
         ))}
@@ -34,14 +36,29 @@ const Products = ({ data }) => {
 
 export default Products;
 
-export async function getStaticProps() {
+// export async function getStaticProps() {
+//   try {
+//     const res = await fetch("https://jsonplaceholder.typicode.com/comments");
+//     const data = await res.json();
+//     return {
+//       props: {
+//         data,
+//       },
+//     };
+//   } catch (error) {}
+// }
+export async function getServerSideProps() {
   try {
-    const res = await fetch("https://jsonplaceholder.typicode.com/comments");
-    const data = await res.json();
-    return {
-      props: {
-        data,
-      },
-    };
-  } catch (error) {}
+    await dbConnect();
+    const res = await Producto.find({});
+    const productos = res.map((doc) => {
+      const producto = doc.toObject();
+      producto._id = `${producto._id}`;
+      return producto;
+    });
+    console.log(res);
+    return { props: { productos } };
+  } catch (error) {
+    console.log(error);
+  }
 }
