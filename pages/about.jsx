@@ -1,5 +1,9 @@
-import Link from "next/link";
 import Layout from "../components/Layout";
+import Image from "next/image";
+
+// const myLoader = ({ src, width, quality }) => {
+//   return `${src}?w=${width}&q=${quality || 75}`;
+// };
 
 const About = () => {
   return (
@@ -41,6 +45,15 @@ const About = () => {
           exercitationem error vel commodi aliquid impedit sunt voluptatibus
           quisquam quibusdam assumenda.
         </p>
+        <Image
+          // loader={myLoader}
+          src="https://images.unsplash.com/photo-1464375117522-1311d6a5b81f?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=2250&q=80"
+          width={1920}
+          height={1280}
+          layout="responsive"
+          priority
+          alt="img"
+        ></Image>
       </div>
     </Layout>
   );
